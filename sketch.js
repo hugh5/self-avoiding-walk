@@ -8,7 +8,6 @@ var ytext;
 var fpsSlider;
 var fps;
 
-
 function setup() {
   createCanvas(800, 800);
 
@@ -64,6 +63,10 @@ function addElements() {
     });
   }
 
+  if (fps == null) {
+    fps = createP("speed: 60");
+    fps.position(460, height + 70);
+  }
   if (fpsSlider == null) {
     fpsSlider = createSlider(1, 60, 60, 1);
     fpsSlider.position(520, height + 80);
@@ -71,10 +74,6 @@ function addElements() {
       fps.html(`speed: ${fpsSlider.value()}`);
       frameRate(fpsSlider.value());
     });
-  }
-  if (fps == null) {
-    fps = createP(fpsSlider.value());
-    fps.position(460, height + 70);
   }
   
 }
