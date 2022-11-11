@@ -20,10 +20,6 @@ function setup() {
 
 function draw() {
   grid.show();
-  xtext.html(`length: ${xslider.value()}`);
-  ytext.html(`width: ${yslider.value()}`);
-  fps.html(`speed: ${fpsSlider.value()}`);
-  frameRate(fpsSlider.value());
 }
 
 function addElements() {
@@ -37,38 +33,48 @@ function addElements() {
   if (restart == null) {
     restart = createButton("Restart", "hello");
     restart.position(520, height + 40);
-    restart.mousePressed(handleMouse);
+    restart.mousePressed(() => {
+      if (mouseButton == LEFT) {
+        setup();
+      }
+    });
   }
-  
+  if (xtext == null) {
+    xtext = createP("width: 5");
+    xtext.position(240, height + 30);
+  }
+  if (ytext == null) {
+    ytext = createP("height: 5");
+    ytext.position(240, height + 70);
+  }
   if (xslider == null) {
     xslider = createSlider(2, 16, 5, 1);
     xslider.position(300, height + 40);
+    xslider.input(() => {
+      xtext.html(`width: ${xslider.value()}`);
+      setup();
+    });
   }
   if (yslider == null) {
     yslider = createSlider(2, 16, 5, 1);
     yslider.position(300, height + 80);
+    yslider.input(() => {
+      ytext.html(`height: ${yslider.value()}`);
+      setup();
+    });
   }
-  if (xtext == null) {
-    xtext = createP(xslider.value());
-    xtext.position(240, height + 30);
-  }
-  if (ytext == null) {
-    ytext = createP(yslider.value());
-    ytext.position(240, height + 70);
-  }
+
   if (fpsSlider == null) {
     fpsSlider = createSlider(1, 60, 60, 1);
     fpsSlider.position(520, height + 80);
+    fpsSlider.input(() => {
+      fps.html(`speed: ${fpsSlider.value()}`);
+      frameRate(fpsSlider.value());
+    });
   }
   if (fps == null) {
     fps = createP(fpsSlider.value());
     fps.position(460, height + 70);
   }
   
-}
-
-function handleMouse() {
-  if (mouseButton == LEFT) {
-    setup();
-  }
 }
