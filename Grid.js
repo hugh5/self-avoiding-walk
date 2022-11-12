@@ -36,7 +36,7 @@ class Grid {
       }
       x = this.point.x + dir.x;
       y = this.point.y + dir.y;
-    } while (!this.inBounds(x,y) || this.grid[x][y] != null);
+    } while (!this.inBounds(x,y) || this.grid[x][y] != null || !this.checkVisibility(x, y));
     this.count += 1;
     this.point = new Point(x, y, this.point, this.count);
     this.grid[x][y] = this.point;
@@ -44,6 +44,35 @@ class Grid {
 
   inBounds(x, y) {
     return x >= 0 && x < this.x && y >= 0 && y < this.y;
+  }
+
+  // BFS the graph from this vertex and verify it can reach all other non visited vertex
+  checkVisibility(x ,y) {
+    var depth = this.bfs(x,y) + this.point.depth;
+    for (var i = 0; i < this.x; i++) {
+      for (var j = 0; j < this.y; j++) {
+        if (this.grid[i][j] == true) {
+          this.grid[i][j] = null;
+        }
+      }
+    }
+    console.log(depth == this.max);
+    return depth == this.max;
+  }
+
+  bfs(x, y) {
+    var directions = [up, down, left, right];
+    var found = 0;
+    if (!this.inBounds(x,y) || this.grid[x][y] instanceof Point || this.grid[x][y] == true) {
+      return 0;
+    } else {
+      this.grid[x][y] = true;
+      found++;
+    }
+    for (var direction of directions) {
+      found += this.bfs(x + direction.x, y + direction.y);
+    }
+    return found;
   }
 
   show() {
@@ -59,11 +88,12 @@ class Grid {
         }
       }
     }
+
     if (this.point.getDepth == this.max) {
       depth.html(`Depth: ${this.point.getDepth}/${this.max}`);
       return;
     }
-    depth.html(`Depth: ${this.point.getDepth}/${this.max}`);
     this.next();
+    depth.html(`Depth: ${this.point.getDepth}/${this.max}`);
   }
 }
