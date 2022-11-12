@@ -56,7 +56,6 @@ class Grid {
         }
       }
     }
-    console.log(depth == this.max);
     return depth == this.max;
   }
 

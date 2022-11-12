@@ -16,7 +16,7 @@ function addElements() {
     depth.style('font-size', '32px');
   
     if (restart == null) {
-      restart = createButton("Restart", "hello");
+      restart = createButton("Restart");
       restart.position(520, height + 40);
       restart.mousePressed(() => {
         if (mouseButton == LEFT) {
